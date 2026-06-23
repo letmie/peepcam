@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:background="#000">
+
+    <!-- Remote camera (full screen) -->
+    <SurfaceView
+        android:id="@+id/remoteSurface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Call overlay (shown during call) -->
+    <FrameLayout
+        android:id="@+id/callOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <!-- Local camera (small PiP-in-grid, top-right) -->
+        <SurfaceView
+            android:id="@+id/localSurface"
+            android:layout_width="160dp"
+            android:layout_height="120dp"
+            android:layout_gravity="top|end"
+            android:layout_margin="12dp"
+            android:elevation="4dp" />
+
+        <!-- Local camera border -->
+        <View
+            android:layout_width="160dp"
+            android:layout_height="120dp"
+            android:layout_gravity="top|end"
+            android:layout_margin="12dp"
+            android:background="#4dffffff"
+            android:elevation="5dp"
+            android:alpha="0.3" />
+
+        <!-- Call timer -->
+        <TextView
+            android:id="@+id/timerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="8dp"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            android:background="#80000000"
+            android:padding="6dp 12dp"
+            android:text="00:00:00"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <!-- Status text (shown when idle/connecting) -->
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:background="#80000000"
+        android:padding="12dp"
+        android:text="Connecting..."
+        android:visibility="visible" />
+
+    <!-- Big round CALL button (center, shown when idle) -->
+    <Button
+        android:id="@+id/btnCall"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:text="CALL"
+        android:textSize="22sp"
+        android:textColor="#fff"
+        android:background="#cc00cc00"
+        android:elevation="6dp"
+        android:visibility="visible"
+        android:enabled="false" />
+
+    <!-- Control bar (bottom, shown during call) -->
+    <LinearLayout
+        android:id="@+id/controlBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="#cc000000"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/btnMute"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="24dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="#33ffffff"
+            android:contentDescription="Mute" />
+
+        <ImageButton
+            android:id="@+id/btnEndCall"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="24dp"
+            android:src="@android:drawable/ic_menu_call"
+            android:background="#ccff0000"
+            android:rotation="180"
+            android:contentDescription="End Call" />
+
+        <ImageButton
+            android:id="@+id/btnPip"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@android:drawable/ic_menu_view"
+            android:background="#33ffffff"
+            android:contentDescription="PiP" />
+
+    </LinearLayout>
+
+</FrameLayout>
