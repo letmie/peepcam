@@ -4,18 +4,24 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@main
-      - uses: actions/setup-java@main
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
         with:
-          distribution: temurin
           java-version: 17
-      - name: Make gradlew executable
+          distribution: temurin
+      - name: Install Android SDK 34
+        run: |
+          echo "y" | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" || echo "SKIP"
+      - name: Grant execute permission
         run: chmod +x gradlew
-      - name: Build debug APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
-      - uses: actions/upload-artifact@main
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug --no-daemon --info 2>&1 | tail -100
+        shell: bash
+      - uses: actions/upload-artifact@v4
+        if: success()
         with:
           name: peepcam-debug
           path: app/build/outputs/apk/debug/app-debug.apk
