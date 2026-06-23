@@ -5,21 +5,16 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-22.04
+    container:
+      image: cirruslabs/android:34
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: 17
-          distribution: temurin
-      - name: Install Android SDK 34
+      - name: Build debug APK
         run: |
-          echo "y" | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" || echo "SKIP"
-      - name: Grant execute permission
-        run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug --no-daemon --info 2>&1 | tail -100
-        shell: bash
+          export ANDROID_HOME=/opt/android-sdk
+          export PATH=$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tail -200
       - uses: actions/upload-artifact@v4
         if: success()
         with:
